@@ -10,7 +10,8 @@ const initialState = {
   name: '',
 };
 
-export default function Form({ obj = initialState }) {
+// eslint-disable-next-line react/prop-types
+export default function Form({ obj = initialState, func }) {
   const { user } = useAuth();
   const [factDetails, setFactDetails] = useState(obj);
 
@@ -31,8 +32,8 @@ export default function Form({ obj = initialState }) {
     e.preventDefault();
 
     if (factDetails.firebaseKey) {
-      // UPDATE FACT
       await updateFact(factDetails, 'Yes');
+      func(factDetails);
     } else {
       const response = await postFact(
         {
@@ -68,5 +69,6 @@ Form.propTypes = {
     text: PropTypes.string,
     name: PropTypes.string,
     firebaseKey: PropTypes.string,
+    func: PropTypes.func,
   }),
 };
